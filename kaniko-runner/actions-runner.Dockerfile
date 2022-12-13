@@ -7,7 +7,7 @@ COPY --from=gcr.io/kaniko-project/executor /kaniko/docker-credential-acr-env /ka
 COPY --from=gcr.io/kaniko-project/executor /kaniko/.docker /kaniko/.docker
 #COPY files/nsswitch.conf /etc/nsswitch.conf
 
-ARG ARCH=amd64
+ARG ARCH=x86_64
 ARG RUNNER_VERSION=2.299.1
 ARG RUNNER_CONTAINER_HOOKS_VERSION=0.1.3
 # Docker and Docker Compose arguments
