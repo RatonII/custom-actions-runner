@@ -68,7 +68,7 @@ RUN cd "$RUNNER_ASSETS_DIR" \
     && unzip ./runner-container-hooks.zip -d ./k8s \
     && rm -f runner-container-hooks.zip
 
-RUN wget https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz docker.tgz \
+RUN wget https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz -O docker.tgz \
     && tar zxvf docker.tgz \
     && cp docker/docker /usr/bin/docker \
     && chmod 755 /usr/bin/docker \
