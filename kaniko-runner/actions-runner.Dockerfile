@@ -71,7 +71,6 @@ RUN cd "$RUNNER_ASSETS_DIR" \
 RUN wget https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz -O docker.tgz \
     && tar zxvf docker.tgz \
     && cp docker/docker /usr/bin/docker \
-    && chmod 755 /usr/bin/docker \
     && rm -rf docker docker.tgz
 
 # We place the scripts in `/usr/bin` so that users who extend this image can
