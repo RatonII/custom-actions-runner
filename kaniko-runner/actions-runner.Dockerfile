@@ -30,7 +30,8 @@ RUN apt-get update -y \
     git \
     git-lfs \
     unzip \
-    && rm -rf /var/lib/apt/lists/*
+    wget
+
 
 #RUN adduser --disabled-password --gecos "" --uid $RUNNER_USER_UID runner \
 #    && groupadd docker --gid $DOCKER_GROUP_GID \
