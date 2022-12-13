@@ -7,7 +7,7 @@ COPY --from=gcr.io/kaniko-project/executor /kaniko/docker-credential-acr-env /ka
 COPY --from=gcr.io/kaniko-project/executor /kaniko/.docker /kaniko/.docker
 #COPY files/nsswitch.conf /etc/nsswitch.conf
 
-ARG ARCH=x86_64
+ARG ARCH=x64
 ARG RUNNER_VERSION=2.299.1
 ARG RUNNER_CONTAINER_HOOKS_VERSION=0.1.3
 # Docker and Docker Compose arguments
@@ -39,13 +39,13 @@ RUN apt-get update -y \
 
 ENV HOME=/home/runner
 
-RUN wget https://github.com/Yelp/dumb-init/releases/download/v${DUMB_INIT_VERSION}/dumb-init_${DUMB_INIT_VERSION}_${ARCH} -O /usr/bin/dumb-init\
+RUN wget https://github.com/Yelp/dumb-init/releases/download/v${DUMB_INIT_VERSION}/dumb-init_${DUMB_INIT_VERSION}_x86_64 -O /usr/bin/dumb-init\
     && chmod +x /usr/bin/dumb-init
 
 ENV RUNNER_ASSETS_DIR=/runnertmp
 RUN mkdir -p "$RUNNER_ASSETS_DIR" \
     && cd "$RUNNER_ASSETS_DIR" \
-    && wget https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-${ARCH}-${RUNNER_VERSION}.tar.gz -O runner.tar.gz \
+    && wget https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz -O runner.tar.gz \
     && tar xzf ./runner.tar.gz \
     && rm runner.tar.gz \
     && ./bin/installdependencies.sh \
