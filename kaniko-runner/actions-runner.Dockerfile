@@ -1,4 +1,4 @@
-FROM public.ecr.aws/debian/debian:bullseye-slim
+FROM mcr.microsoft.com/dotnet/runtime-deps:6.0
 
 COPY --from=gcr.io/kaniko-project/executor /kaniko/executor /kaniko/executor
 COPY --from=gcr.io/kaniko-project/executor /kaniko/docker-credential-gcr /kaniko/docker-credential-gcr
