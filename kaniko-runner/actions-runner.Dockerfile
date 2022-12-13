@@ -94,7 +94,8 @@ COPY hooks /etc/arc/hooks/
 ENV ImageOS=debian-bullseye-slim
 
 RUN echo "PATH=${PATH}" > /etc/environment \
-    && echo "ImageOS=${ImageOS}" >> /etc/environment
+    && echo "ImageOS=${ImageOS}" >> /etc/environment \
+RUN mkdir /runner
 #WORKDIR /runnertmp
 #USER runner
 ENTRYPOINT ["/bin/bash", "-c"]

@@ -2,7 +2,7 @@
 source logger.sh
 
 RUNNER_ASSETS_DIR=${RUNNER_ASSETS_DIR:-/runnertmp}
-RUNNER_HOME=${RUNNER_HOME:-/runnertmp}
+RUNNER_HOME=${RUNNER_HOME:-/runner}
 
 # Let GitHub runner execute these hooks. These environment variables are used by GitHub's Runner as described here
 # https://github.com/actions/runner/blob/main/docs/adrs/1751-runner-job-hooks.md
