@@ -1,5 +1,12 @@
 FROM public.ecr.aws/debian/debian:bullseye-slim
 
+COPY --from=gcr.io/kaniko-project/executor /kaniko/executor /kaniko/executor
+COPY --from=gcr.io/kaniko-project/executor /kaniko/docker-credential-gcr /kaniko/docker-credential-gcr
+COPY --from=gcr.io/kaniko-project/executor /kaniko/docker-credential-ecr-login /kaniko/docker-credential-ecr-login
+COPY --from=gcr.io/kaniko-project/executor /kaniko/docker-credential-acr-env /kaniko/docker-credential-acr-env
+COPY --from=gcr.io/kaniko-project/executor /kaniko/.docker /kaniko/.docker
+#COPY files/nsswitch.conf /etc/nsswitch.conf
+
 ARG TARGETPLATFORM
 ARG RUNNER_VERSION=2.299.1
 ARG RUNNER_CONTAINER_HOOKS_VERSION=0.1.3
