@@ -7,16 +7,13 @@ COPY --from=gcr.io/kaniko-project/executor /kaniko/docker-credential-acr-env /ka
 COPY --from=gcr.io/kaniko-project/executor /kaniko/.docker /kaniko/.docker
 #COPY files/nsswitch.conf /etc/nsswitch.conf
 
-ARG TARGETPLATFORM
+ARG ARCH=x64
 ARG RUNNER_VERSION=2.299.1
 ARG RUNNER_CONTAINER_HOOKS_VERSION=0.1.3
 # Docker and Docker Compose arguments
 ARG CHANNEL=stable
-ARG DOCKER_VERSION=20.10.21
-ARG DOCKER_COMPOSE_VERSION=v2.12.2
 ARG DUMB_INIT_VERSION=1.2.5
 ARG RUNNER_USER_UID=1001
-ARG DOCKER_GROUP_GID=121
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV DOCKER_CONFIG /kaniko/.docker/
@@ -42,16 +39,11 @@ RUN apt-get update -y \
 
 ENV HOME=/home/runner
 
-RUN export ARCH=$(echo ${TARGETPLATFORM} | cut -d / -f2) \
-    && if [ "$ARCH" = "arm64" ]; then export ARCH=aarch64 ; fi \
-    && if [ "$ARCH" = "amd64" ] || [ "$ARCH" = "i386" ]; then export ARCH=x86_64 ; fi \
-    && wget https://github.com/Yelp/dumb-init/releases/download/v${DUMB_INIT_VERSION}/dumb-init_${DUMB_INIT_VERSION}_${ARCH} -O /usr/bin/dumb-init\
+RUN wget https://github.com/Yelp/dumb-init/releases/download/v${DUMB_INIT_VERSION}/dumb-init_${DUMB_INIT_VERSION}_${ARCH} -O /usr/bin/dumb-init\
     && chmod +x /usr/bin/dumb-init
 
 ENV RUNNER_ASSETS_DIR=/runnertmp
-RUN export ARCH=$(echo ${TARGETPLATFORM} | cut -d / -f2) \
-    && if [ "$ARCH" = "amd64" ] || [ "$ARCH" = "x86_64" ] || [ "$ARCH" = "i386" ]; then export ARCH=x64 ; fi \
-    && mkdir -p "$RUNNER_ASSETS_DIR" \
+RUN mkdir -p "$RUNNER_ASSETS_DIR" \
     && cd "$RUNNER_ASSETS_DIR" \
     && wget https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-${ARCH}-${RUNNER_VERSION}.tar.gz -O runner.tar.gz \
     && tar xzf ./runner.tar.gz \
