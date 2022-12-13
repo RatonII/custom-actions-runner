@@ -19,6 +19,9 @@ ARG RUNNER_USER_UID=1001
 ARG DOCKER_GROUP_GID=121
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV DOCKER_CONFIG /kaniko/.docker/
+ENV DOCKER_CREDENTIAL_GCR_CONFIG /kaniko/.config/gcloud/docker_credential_gcr_config.json
+
 RUN apt-get update -y \
     && apt-get install -y software-properties-common \
     && apt-get update -y \
