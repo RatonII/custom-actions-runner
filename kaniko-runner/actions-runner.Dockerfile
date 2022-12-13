@@ -17,6 +17,8 @@ ARG RUNNER_USER_UID=1001
 ENV DEBIAN_FRONTEND=noninteractive
 ENV DOCKER_CONFIG /kaniko/.docker/
 ENV DOCKER_CREDENTIAL_GCR_CONFIG /kaniko/.config/gcloud/docker_credential_gcr_config.json
+ENV RUNNER_ALLOW_RUNASROOT=1
+ENV RUNNER_MANUALLY_TRAP_SIG=1
 
 RUN apt-get update -y \
     && apt-get install -y software-properties-common \
@@ -92,7 +94,7 @@ RUN chmod +x /usr/bin/*
 COPY hooks /etc/arc/hooks/
 
 ENV ImageOS=debian-bullseye-slim
-
+RUN mkdir /runner
 RUN echo "PATH=${PATH}" > /etc/environment \
     && echo "ImageOS=${ImageOS}" >> /etc/environment \
 #USER runner
