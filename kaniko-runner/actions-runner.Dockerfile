@@ -83,7 +83,7 @@ RUN cd "$RUNNER_ASSETS_DIR" \
 # We place the scripts in `/usr/bin` so that users who extend this image can
 # override them with scripts of the same name placed in `/usr/local/bin`.
 COPY entrypoint.sh startup.sh logger.sh graceful-stop.sh update-status /usr/bin/
-RUN chmod +x /usr/bin/entrypoint.sh
+RUN chmod +x /usr/bin/*
 # Copy the docker shim which propagates the docker MTU to underlying networks
 # to replace the docker binary in the PATH.
 #COPY docker-shim.sh /usr/local/bin/docker
