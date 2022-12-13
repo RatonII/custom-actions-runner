@@ -71,10 +71,10 @@ fi
 #  shopt -u dotglob
 #fi
 
-if ! cd "${RUNNER_HOME}"; then
-  log.error "Failed to cd into ${RUNNER_HOME}"
-  exit 1
-fi
+#if ! cd "${RUNNER_HOME}"; then
+#  log.error "Failed to cd into ${RUNNER_HOME}"
+#  exit 1
+#fi
 
 # past that point, it's all relative pathes from /runner
 
