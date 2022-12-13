@@ -20,6 +20,8 @@ ENV DOCKER_CONFIG /kaniko/.docker/
 ENV DOCKER_CREDENTIAL_GCR_CONFIG /kaniko/.config/gcloud/docker_credential_gcr_config.json
 ENV RUNNER_ALLOW_RUNASROOT=1
 ENV RUNNER_MANUALLY_TRAP_SIG=1
+ENV DISABLE_WAIT_FOR_DOCKER=true
+ENV DOCKER_ENABLED=false
 
 RUN apt-get update -y \
     && apt-get install -y software-properties-common \
@@ -68,10 +70,10 @@ RUN cd "$RUNNER_ASSETS_DIR" \
     && unzip ./runner-container-hooks.zip -d ./k8s \
     && rm -f runner-container-hooks.zip
 
-RUN wget https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz -O docker.tgz \
-    && tar zxvf docker.tgz \
-    && cp docker/docker /usr/bin/docker \
-    && rm -rf docker docker.tgz
+#RUN wget https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz -O docker.tgz \
+#    && tar zxvf docker.tgz \
+#    && cp docker/docker /usr/bin/docker \
+#    && rm -rf docker docker.tgz
 
 # We place the scripts in `/usr/bin` so that users who extend this image can
 # override them with scripts of the same name placed in `/usr/local/bin`.
