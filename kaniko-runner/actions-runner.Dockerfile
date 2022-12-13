@@ -11,7 +11,6 @@ ARG ARCH=x64
 ARG RUNNER_VERSION=2.299.1
 ARG RUNNER_CONTAINER_HOOKS_VERSION=0.1.3
 # Docker and Docker Compose arguments
-ARG CHANNEL=stable
 ARG DUMB_INIT_VERSION=1.2.5
 ARG RUNNER_USER_UID=1001
 
@@ -57,9 +56,9 @@ RUN mkdir -p "$RUNNER_ASSETS_DIR" \
     && rm -rf /var/lib/apt/lists/*
 
 ENV RUNNER_TOOL_CACHE=/opt/hostedtoolcache
-RUN mkdir /opt/hostedtoolcache \
-    && chgrp docker /opt/hostedtoolcache \
-    && chmod g+rwx /opt/hostedtoolcache
+RUN mkdir /opt/hostedtoolcache
+#    && chgrp docker /opt/hostedtoolcache \
+#    && chmod g+rwx /opt/hostedtoolcache
 
 RUN cd "$RUNNER_ASSETS_DIR" \
     && wget https://github.com/actions/runner-container-hooks/releases/download/v${RUNNER_CONTAINER_HOOKS_VERSION}/actions-runner-hooks-k8s-${RUNNER_CONTAINER_HOOKS_VERSION}.zip -O runner-container-hooks.zip\
