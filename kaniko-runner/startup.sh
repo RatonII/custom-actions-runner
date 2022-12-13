@@ -93,7 +93,7 @@ update-status "Registering"
 retries_left=10
 while [[ ${retries_left} -gt 0 ]]; do
   log.debug 'Configuring the runner.'
-  ./config.sh --unattended --replace \
+  $RUNNER_ASSETS_DIR/config.sh --unattended --replace \
     --name "${RUNNER_NAME}" \
     --url "${GITHUB_URL}${ATTACH}" \
     --token "${RUNNER_TOKEN}" \
@@ -177,4 +177,4 @@ log.notice "WARNING LATEST TAG HAS BEEN DEPRECATED. SEE GITHUB ISSUE FOR DETAILS
 log.notice "https://github.com/actions-runner-controller/actions-runner-controller/issues/2056"
 
 update-status "Idle"
-exec env -- "${env[@]}" ./run.sh
+exec env -- "${env[@]}" $RUNNER_ASSETS_DIR/run.sh
