@@ -8,10 +8,10 @@ graceful_stop() {
   log.notice "Executing actions-runner-controller's SIGTERM handler."
   log.notice "Note that if this takes more time than terminationGracePeriodSeconds, the runner will be forcefully terminated by Kubernetes, which may result in the in-progress workflow job, if any, to fail."
 
-  log.notice "Ensuring dockerd is still running."
-  if ! docker ps -a; then
-    log.warning "Detected configuration error: dockerd should be running but is already nowhere. This is wrong. Ensure that your init system to NOT pass SIGTERM directly to dockerd!"
-  fi
+#  log.notice "Ensuring dockerd is still running."
+#  if ! docker ps -a; then
+#    log.warning "Detected configuration error: dockerd should be running but is already nowhere. This is wrong. Ensure that your init system to NOT pass SIGTERM directly to dockerd!"
+#  fi
 
   # The below procedure atomically removes the runner from GitHub Actions service,
   # to ensure that the runner is not running any job.
