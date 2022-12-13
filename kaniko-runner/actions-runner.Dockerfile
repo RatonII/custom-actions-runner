@@ -95,7 +95,7 @@ ENV ImageOS=debian-bullseye-slim
 
 RUN echo "PATH=${PATH}" > /etc/environment \
     && echo "ImageOS=${ImageOS}" >> /etc/environment
-
+WORKDIR=/runnertmp
 #USER runner
 
 ENTRYPOINT ["/bin/bash", "-c"]
