@@ -13,6 +13,7 @@ ARG RUNNER_CONTAINER_HOOKS_VERSION=0.1.3
 # Docker and Docker Compose arguments
 ARG DUMB_INIT_VERSION=1.2.5
 ARG RUNNER_USER_UID=1001
+ARG DOCKER_VERSION=20.10.9
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV DOCKER_CONFIG /kaniko/.docker/
@@ -67,20 +68,14 @@ RUN cd "$RUNNER_ASSETS_DIR" \
     && unzip ./runner-container-hooks.zip -d ./k8s \
     && rm -f runner-container-hooks.zip
 
-#RUN set -vx; \
-#    export ARCH=$(echo ${TARGETPLATFORM} | cut -d / -f2) \
-#    && if [ "$ARCH" = "arm64" ]; then export ARCH=aarch64 ; fi \
-#    && if [ "$ARCH" = "amd64" ] || [ "$ARCH" = "i386" ]; then export ARCH=x86_64 ; fi \
-#    && curl -fLo docker.tgz https://download.docker.com/linux/static/${CHANNEL}/${ARCH}/docker-${DOCKER_VERSION}.tgz \
-#    && tar zxvf docker.tgz \
-#    && install -o root -g root -m 755 docker/docker /usr/bin/docker \
-#    && rm -rf docker docker.tgz
-
-#RUN export ARCH=$(echo ${TARGETPLATFORM} | cut -d / -f2) \
-#    && if [ "$ARCH" = "arm64" ]; then export ARCH=aarch64 ; fi \
-#    && if [ "$ARCH" = "amd64" ] || [ "$ARCH" = "i386" ]; then export ARCH=x86_64 ; fi \
-#    && curl -fLo /usr/bin/docker-compose https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-linux-${ARCH} \
-#    && chmod +x /usr/bin/docker-compose
+RUN set -vx; \
+    export ARCH=$(echo ${TARGETPLATFORM} | cut -d / -f2) \
+    && if [ "$ARCH" = "arm64" ]; then export ARCH=aarch64 ; fi \
+    && if [ "$ARCH" = "amd64" ] || [ "$ARCH" = "i386" ]; then export ARCH=x86_64 ; fi \
+    && curl -fLo docker.tgz https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz \
+    && tar zxvf docker.tgz \
+    && install -o root -g root -m 755 docker/docker /usr/bin/docker \
+    && rm -rf docker docker.tgz
 
 # We place the scripts in `/usr/bin` so that users who extend this image can
 # override them with scripts of the same name placed in `/usr/local/bin`.
