@@ -97,5 +97,4 @@ RUN echo "PATH=${PATH}" > /etc/environment \
     && echo "ImageOS=${ImageOS}" >> /etc/environment \
 WORKDIR /runner
 #USER runner
-ENTRYPOINT ["/bin/bash", "-c"]
-CMD ["entrypoint.sh"]
+ENTRYPOINT ["/usr/bin/entrypoint.sh"]

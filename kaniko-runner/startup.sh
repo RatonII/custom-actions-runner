@@ -1,7 +1,7 @@
 #!/bin/bash
 source logger.sh
 
-RUNNER_ASSETS_DIR=${RUNNER_ASSETS_DIR:-/runnertmp}
+RUNNER_ASSETS_DIR=${dc:-/runnertmp}
 RUNNER_HOME=${RUNNER_HOME:-/runner}
 
 # Let GitHub runner execute these hooks. These environment variables are used by GitHub's Runner as described here
