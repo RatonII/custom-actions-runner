@@ -36,7 +36,7 @@ RUN apt-get update -y \
 #    && echo "%sudo   ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers \
 #    && echo "Defaults env_keep += \"DEBIAN_FRONTEND\"" >> /etc/sudoers
 
-ENV HOME=/home/runner
+ENV HOME=/runner
 
 RUN wget https://github.com/Yelp/dumb-init/releases/download/v${DUMB_INIT_VERSION}/dumb-init_${DUMB_INIT_VERSION}_x86_64 -O /usr/bin/dumb-init\
     && chmod +x /usr/bin/dumb-init
@@ -95,8 +95,7 @@ ENV ImageOS=debian-bullseye-slim
 
 RUN echo "PATH=${PATH}" > /etc/environment \
     && echo "ImageOS=${ImageOS}" >> /etc/environment \
-RUN mkdir /runner
-#WORKDIR /runnertmp
+WORKDIR /runner
 #USER runner
 ENTRYPOINT ["/bin/bash", "-c"]
 CMD ["entrypoint.sh"]
