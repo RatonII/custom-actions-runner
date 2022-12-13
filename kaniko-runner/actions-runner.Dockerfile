@@ -76,13 +76,13 @@ RUN wget https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_
 # We place the scripts in `/usr/bin` so that users who extend this image can
 # override them with scripts of the same name placed in `/usr/local/bin`.
 COPY entrypoint.sh startup.sh logger.sh graceful-stop.sh update-status /usr/bin/
-RUN chmod +x /usr/bin/* && chmod +x /etc/arc/hooks/job*/* && chmod +x /etc/arc/hooks/job*
 # Copy the docker shim which propagates the docker MTU to underlying networks
 # to replace the docker binary in the PATH.
 #COPY docker-shim.sh /usr/local/bin/docker
 
 # Configure hooks folder structure.
 COPY hooks /etc/arc/hooks/
+RUN chmod +x /etc/arc/hooks/*
 
 ENV ImageOS=debian-bullseye-slim
 RUN mkdir /runner

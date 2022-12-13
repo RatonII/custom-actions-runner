@@ -8,5 +8,6 @@ log.debug "Running ARC Job Completed Hooks"
 
 for hook in /etc/arc/hooks/job-completed.d/*; do
   log.debug "Running hook: $hook"
+  chmod +x $hook
   "$hook" "$@"
 done
