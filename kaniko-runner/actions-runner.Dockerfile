@@ -22,7 +22,7 @@ ENV RUNNER_ALLOW_RUNASROOT=1
 ENV RUNNER_MANUALLY_TRAP_SIG=1
 ENV DISABLE_WAIT_FOR_DOCKER=true
 ENV DOCKER_ENABLED=false
-ENV RUNNER_EPHEMERAL="false"
+ENV RUNNER_GRACEFUL_STOP_TIMEOUT=60
 RUN apt-get update -y \
     && apt-get install -y software-properties-common \
     && apt-get update -y \
