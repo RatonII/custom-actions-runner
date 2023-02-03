@@ -77,7 +77,7 @@ fi
 #fi
 
 # past that point, it's all relative pathes from /runner
-
+RUNNER_EPHEMERAL="false"
 config_args=()
 if [ "${RUNNER_FEATURE_FLAG_ONCE:-}" != "true" ] && [ "${RUNNER_EPHEMERAL}" == "true" ]; then
   config_args+=(--ephemeral)
