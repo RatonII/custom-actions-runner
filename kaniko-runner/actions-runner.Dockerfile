@@ -8,7 +8,7 @@ COPY --from=gcr.io/kaniko-project/executor /kaniko/.docker /kaniko/.docker
 #COPY files/nsswitch.conf /etc/nsswitch.conf
 
 ARG ARCH=x64
-ARG RUNNER_VERSION=2.299.1
+ARG RUNNER_VERSION=2.301.1
 ARG RUNNER_CONTAINER_HOOKS_VERSION=0.1.3
 # Docker and Docker Compose arguments
 ARG DUMB_INIT_VERSION=1.2.5
