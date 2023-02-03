@@ -22,7 +22,7 @@ ENV RUNNER_ALLOW_RUNASROOT=1
 ENV RUNNER_MANUALLY_TRAP_SIG=1
 ENV DISABLE_WAIT_FOR_DOCKER=true
 ENV DOCKER_ENABLED=false
-ENV RUNNER_EPHEMERAL=false
+ENV RUNNER_EPHEMERAL="false"
 RUN apt-get update -y \
     && apt-get install -y software-properties-common \
     && apt-get update -y \
@@ -32,14 +32,6 @@ RUN apt-get update -y \
     git-lfs \
     unzip \
     wget
-
-
-#RUN adduser --disabled-password --gecos "" --uid $RUNNER_USER_UID runner \
-#    && groupadd docker --gid $DOCKER_GROUP_GID \
-#    && usermod -aG sudo runner \
-#    && usermod -aG docker runner \
-#    && echo "%sudo   ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers \
-#    && echo "Defaults env_keep += \"DEBIAN_FRONTEND\"" >> /etc/sudoers
 
 ENV HOME=/runner
 
@@ -62,18 +54,11 @@ RUN mkdir -p "$RUNNER_ASSETS_DIR" \
 
 ENV RUNNER_TOOL_CACHE=/opt/hostedtoolcache
 RUN mkdir /opt/hostedtoolcache
-#    && chgrp docker /opt/hostedtoolcache \
-#    && chmod g+rwx /opt/hostedtoolcache
 
 RUN cd "$RUNNER_ASSETS_DIR" \
     && wget https://github.com/actions/runner-container-hooks/releases/download/v${RUNNER_CONTAINER_HOOKS_VERSION}/actions-runner-hooks-k8s-${RUNNER_CONTAINER_HOOKS_VERSION}.zip -O runner-container-hooks.zip\
     && unzip ./runner-container-hooks.zip -d ./k8s \
     && rm -f runner-container-hooks.zip
-
-#RUN wget https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz -O docker.tgz \
-#    && tar zxvf docker.tgz \
-#    && cp docker/docker /usr/bin/docker \
-#    && rm -rf docker docker.tgz
 
 # We place the scripts in `/usr/bin` so that users who extend this image can
 # override them with scripts of the same name placed in `/usr/local/bin`.
