@@ -34,6 +34,7 @@ RUN wget https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/
     && rm runner.tar.gz
 RUN echo 'runner:x:1234:1234:,,,:/runner:/usr/sbin/nologin' >> /etc/passwd
 RUN ["chown", "1234:1234", "-R", "/runner"]
+RUN ["chown", "1234:1234", "-R", "/kaniko"]
 USER runner
 
 ENV EPHEMERAL=true
