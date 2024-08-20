@@ -30,13 +30,7 @@ WORKDIR $HOME
 RUN wget https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz -O runner.tar.gz \
     && echo "3f6efb7488a183e291fc2c62876e14c9ee732864173734facc85a1bfb1744464  runner.tar.gz" | shasum -a 256 -c \
     && tar xzf ./runner.tar.gz \
-    && rm runner.tar.gz \
-    && ./bin/installdependencies.sh \
-    # libyaml-dev is required for ruby/setup-ruby action.
-    # It is installed after installdependencies.sh and before removing /var/lib/apt/lists
-    # to avoid rerunning apt-update on its own.
-    && apt-get install -y libyaml-dev \
-    && rm -rf /var/lib/apt/lists/*
+    && rm runner.tar.gz
 #USER runner
 ENV EPHEMERAL=true
 ENV ORG_URL="https://github.com/sliide"
