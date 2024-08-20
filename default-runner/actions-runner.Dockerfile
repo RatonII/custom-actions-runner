@@ -43,4 +43,4 @@ ENV ACCESS_TOKEN=""
 ENV RUNNER_NAME="kaniko-runner"
 
 CMD ["/runner/config.sh", "--unattended", "--name", "$RUNNER_NAME", "--url", "$ORG_URL", "--token", "$ACCESS_TOKEN", "--labels", "$LABELS"]
-CMD ["/runner/run.sh"]
+CMD ["/runner/run.sh", "--ephemeral"]
