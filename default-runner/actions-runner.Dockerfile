@@ -39,4 +39,4 @@ ENV LABELS="kaniko,helm"
 ENV ACCESS_TOKEN=""
 ENV RUNNER_NAME="kaniko-runner"
 
-ENTRYPOINT ["/runner/config.sh --unattended --name $RUNNER_NAME --url $ORG_URL --token $ACCESS_TOKEN --labels $LABELS && /runner/run.sh"]
+CMD ["/runner/config.sh --unattended --name $RUNNER_NAME --url $ORG_URL --token $ACCESS_TOKEN --labels $LABELS && /runner/run.sh"]
