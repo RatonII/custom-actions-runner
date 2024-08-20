@@ -1,4 +1,4 @@
-FROM public.ecr.aws/debian/debian:bullseye-slim
+FROM public.ecr.aws/debian/debian:bookworm-slim
 
 COPY --from=gcr.io/kaniko-project/executor /kaniko/executor /kaniko/executor
 COPY --from=gcr.io/kaniko-project/executor /kaniko/docker-credential-gcr /kaniko/docker-credential-gcr
