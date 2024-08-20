@@ -9,18 +9,11 @@ COPY --from=gcr.io/kaniko-project/executor /kaniko/.docker /kaniko/.docker
 
 ARG ARCH=x64
 ARG RUNNER_VERSION=2.319.1
-ARG RUNNER_CONTAINER_HOOKS_VERSION=0.1.3
-# Docker and Docker Compose arguments
-ARG DUMB_INIT_VERSION=1.2.5
 ARG RUNNER_USER_UID=1001
 ARG DOCKER_VERSION=20.10.9
 
 ENV DOCKER_CONFIG /kaniko/.docker/
 ENV DOCKER_CREDENTIAL_GCR_CONFIG /kaniko/.config/gcloud/docker_credential_gcr_config.json
-ENV RUNNER_ALLOW_RUNASROOT=1
-ENV DISABLE_WAIT_FOR_DOCKER=true
-ENV DOCKER_ENABLED=false
-ENV RUNNER_GRACEFUL_STOP_TIMEOUT=60
 RUN apt-get update -y \
     && apt-get install -y software-properties-common \
     && apt-get update -y \
