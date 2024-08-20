@@ -41,6 +41,5 @@ ENV RUNNER_SCOPE="org"
 ENV LABELS="kaniko,helm"
 ENV ACCESS_TOKEN=""
 ENV RUNNER_NAME="kaniko-runner"
-
-CMD ["/runner/config.sh", "--unattended", "--name", "$RUNNER_NAME", "--url", "$ORG_URL", "--token", "$ACCESS_TOKEN", "--labels", "$LABELS", "--ephemeral", "$EPHEMERAL"]
-CMD ["/runner/run.sh"]
+ENTRYPOINT ["/bin/bash", "-c"]
+CMD ["/runner/config.sh --unattended --name $RUNNER_NAME --url $ORG_URL --token $ACCESS_TOKEN --labels $LABELS --ephemeral $EPHEMERAL && /runner/run.sh" ]
