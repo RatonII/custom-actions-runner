@@ -27,9 +27,7 @@ RUN apt-get update -y \
 ENV HOME=/runner
 WORKDIR $HOME
 
-RUN mkdir -p "$RUNNER_ASSETS_DIR" \
-    && cd "$RUNNER_ASSETS_DIR" \
-    && wget https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz -O runner.tar.gz \
+RUN wget https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz -O runner.tar.gz \
     && echo "3f6efb7488a183e291fc2c62876e14c9ee732864173734facc85a1bfb1744464  runner.tar.gz" | shasum -a 256 -c \
     && tar xzf ./runner.tar.gz \
     && rm runner.tar.gz \
