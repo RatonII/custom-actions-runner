@@ -11,6 +11,7 @@ ARG ARCH=x64
 ARG RUNNER_VERSION=2.319.1
 ARG RUNNER_USER_UID=1001
 ARG DOCKER_VERSION=20.10.9
+ARG ACCESS_TOKEN
 
 ENV DOCKER_CONFIG /kaniko/.docker/
 ENV DOCKER_CREDENTIAL_GCR_CONFIG /kaniko/.config/gcloud/docker_credential_gcr_config.json
@@ -39,7 +40,7 @@ ENV EPHEMERAL=true
 ENV ORG_URL="https://github.com/sliide"
 ENV RUNNER_SCOPE="org"
 ENV LABELS="kaniko,helm"
-ENV ACCESS_TOKEN=""
+ENV ACCESS_TOKEN=$ACCESS_TOKEN
 ENV RUNNER_NAME="kaniko-runner"
 ENTRYPOINT ["/bin/bash", "-c"]
 CMD ["/runner/config.sh --unattended --name $RUNNER_NAME --url $ORG_URL --token $ACCESS_TOKEN --labels $LABELS --ephemeral $EPHEMERAL && /runner/run.sh" ]
