@@ -36,7 +36,6 @@ RUN wget https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/
 RUN echo 'runner:x:1234:1234:,,,:/runner:/usr/sbin/nologin' >> /etc/passwd
 RUN ["chown", "1234:1234", "-R", "/runner"]
 RUN ["chown", "1234:1234", "-R", "/kaniko"]
-USER runner
 
 ENV EPHEMERAL=""
 ENV ORG_URL="https://github.com/sliide"
@@ -45,6 +44,14 @@ ENV LABELS="kaniko,helm"
 ENV ACCESS_TOKEN=$ACCESS_TOKEN
 
 COPY entrypoint.sh  $HOME
+RUN chmod u+x $HOME/entrypoint.sh
+USER runner
+
+ENV EPHEMERAL=""
+ENV ORG_URL="https://github.com/sliide"
+ENV RUNNER_SCOPE="org"
+ENV LABELS="kaniko,helm"
+ENV ACCESS_TOKEN=$ACCESS_TOKEN
 
 ENTRYPOINT ["/bin/bash", "-c"]
 CMD ["/runner/entrypoint.sh" ]
