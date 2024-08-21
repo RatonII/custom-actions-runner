@@ -34,7 +34,8 @@ RUN wget https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/
     && echo "3f6efb7488a183e291fc2c62876e14c9ee732864173734facc85a1bfb1744464  runner.tar.gz" | shasum -a 256 -c \
     && tar xzf ./runner.tar.gz \
     && rm runner.tar.gz
-RUN echo 'runner:x:1234:1234:,,,:/runner:/usr/sbin/nologin' >> /etc/passwd
+RUN echo 'runner:x:1234:1234:,,,:/runner:/usr/sbin/nologin' >> /etc/passwd && \
+    echo 'messagebus:x:1111:' >> /etc/group
 RUN ["chown", "1234:1234", "-R", "/runner"]
 RUN ["chown", "1234:1234", "-R", "/kaniko"]
 
