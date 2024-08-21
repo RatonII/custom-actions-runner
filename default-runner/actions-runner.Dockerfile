@@ -23,6 +23,7 @@ RUN apt-get update -y \
     git \
     git-lfs \
     unzip \
+    curl \
     wget
 
 ENV HOME=/runner
