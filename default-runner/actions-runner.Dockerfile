@@ -46,8 +46,8 @@ ENV ACCESS_TOKEN=$ACCESS_TOKEN
 
 COPY entrypoint.sh  $HOME
 RUN chmod +x $HOME/entrypoint.sh
-USER runner
-
+#USER runner
+ENV RUNNER_ALLOW_RUNASROOT=true
 ENV EPHEMERAL=""
 ENV ORG_URL="https://github.com/sliide"
 ENV RUNNER_SCOPE="org"
