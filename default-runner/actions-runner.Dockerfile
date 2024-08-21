@@ -44,7 +44,7 @@ ENV LABELS="kaniko,helm"
 ENV ACCESS_TOKEN=$ACCESS_TOKEN
 
 COPY entrypoint.sh  $HOME
-RUN chmod u+x $HOME/entrypoint.sh
+RUN chmod +x $HOME/entrypoint.sh
 USER runner
 
 ENV EPHEMERAL=""
