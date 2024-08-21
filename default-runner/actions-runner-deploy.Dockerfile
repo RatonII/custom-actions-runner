@@ -1,6 +1,7 @@
 FROM public.ecr.aws/debian/debian:bookworm-slim
 
 ARG ARCH=x64
+ARG TARGETARCH="amd64"
 ARG RUNNER_VERSION=2.319.1
 ARG ACCESS_TOKEN
 
