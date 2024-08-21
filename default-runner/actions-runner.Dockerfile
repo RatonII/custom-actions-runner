@@ -24,7 +24,8 @@ RUN apt-get update -y \
     git-lfs \
     unzip \
     curl \
-    wget
+    wget \
+    jq
 
 ENV HOME=/runner
 WORKDIR $HOME
