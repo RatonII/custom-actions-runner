@@ -37,7 +37,7 @@ RUN ["chown", "1234:1234", "-R", "/runner"]
 RUN ["chown", "1234:1234", "-R", "/kaniko"]
 USER runner
 
-ENV EPHEMERAL=true
+ENV EPHEMERAL=""
 ENV ORG_URL="https://github.com/sliide"
 ENV RUNNER_SCOPE="org"
 ENV LABELS="kaniko,helm"
