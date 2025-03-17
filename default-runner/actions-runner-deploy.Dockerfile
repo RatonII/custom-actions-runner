@@ -1,12 +1,25 @@
 FROM public.ecr.aws/debian/debian:bookworm-slim
 
-ARG ARCH=x64
-ARG TARGETARCH="amd64"
-ARG RUNNER_VERSION=2.319.1
-ARG ACCESS_TOKEN
+COPY --from=gcr.io/kaniko-project/executor:debug  /kaniko/executor /kaniko/executor
+COPY --from=gcr.io/kaniko-project/executor:debug  /kaniko/docker-credential-gcr /kaniko/docker-credential-gcr
+COPY --from=gcr.io/kaniko-project/executor:debug  /kaniko/docker-credential-ecr-login  /kaniko/docker-credential-ecr-login
+COPY --from=gcr.io/kaniko-project/executor:debug  /kaniko/docker-credential-ecr-login  /kaniko/docker-credential-ecr-login
+COPY --from=gcr.io/kaniko-project/executor:debug  /kaniko/docker-credential-acr-env  /kaniko/docker-credential-acr-env
+COPY --from=gcr.io/kaniko-project/executor:debug  /kaniko/.docker /kaniko/.docker
+COPY --from=mplatform/manifest-tool:alpine  /manifest-tool /kaniko/manifest-tool
+#COPY files/nsswitch.conf /etc/nsswitch.conf
 
-ENV DOCKER_CONFIG /kaniko/.docker/
-ENV DOCKER_CREDENTIAL_GCR_CONFIG /kaniko/.config/gcloud/docker_credential_gcr_config.json
+ARG DEBIAN_FRONTEND=noninteractive
+ARG ARCH=x64
+ARG RUNNER_VERSION=2.322.0
+ARG RUNNER_USER_UID=1001
+ARG DOCKER_VERSION=20.10.9
+ENV DOCKER_CONFIG=/kaniko/.docker/
+ENV DOCKER_CREDENTIAL_GCR_CONFIG=/kaniko/.config/gcloud/docker_credential_gcr_config.json
+ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/kaniko
+
+RUN rm -rf /var/lib/dpkg/statoverride \
+    && rm -rf /var/lib/dpkg/lock
 RUN apt-get update -y \
     && apt-get install -y software-properties-common \
     && apt-get update -y \
@@ -18,28 +31,41 @@ RUN apt-get update -y \
     curl \
     wget \
     jq
+### Install docker cli to create multiarch manifests
+RUN install -m 0755 -d /etc/apt/keyrings \
+ && curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc \
+ && chmod a+r /etc/apt/keyrings/docker.asc
+
+RUN echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  tee /etc/apt/sources.list.d/docker.list > /dev/null \
+  && apt-get update && apt-get install -y docker-ce-cli
 
 ENV HOME=/runner
 WORKDIR $HOME
-RUN echo 'runner:x:1234:1234:,,,:/runner:/usr/sbin/nologin' >> /etc/passwd
-RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
-    chmod +x kubectl && mv ./kubectl /bin/
 
-ENV TARGETARCH=${TARGETARCH}
-# Install Helm
-ENV HELM_VERSION="v3.9.3"
-RUN curl -L https://get.helm.sh/helm-${HELM_VERSION}-linux-${TARGETARCH}.tar.gz | \
-    tar xz && mv linux-${TARGETARCH}/helm /bin/ && \
-    rm -rf linux-${TARGETARCH} && \
-    chmod +x /bin/helm && \
-    chown 1234:1234 /bin/helm
-
-RUN wget https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz -O runner.tar.gz \
-    && echo "3f6efb7488a183e291fc2c62876e14c9ee732864173734facc85a1bfb1744464  runner.tar.gz" | shasum -a 256 -c \
+RUN export RUNNER_ARCH="arm64" \
+    && if [ "$(dpkg --print-architecture)" = "amd64" ]; then export RUNNER_ARCH=x64 ; fi \
+    && wget https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-${RUNNER_ARCH}-${RUNNER_VERSION}.tar.gz -O runner.tar.gz \
     && tar xzf ./runner.tar.gz \
-    && rm runner.tar.gz
+    && rm runner.tar.gz \
+    && ./bin/installdependencies.sh
 
+# We pre-install nodejs to reduce time of setup-node and improve its reliability.
+ENV NODE_VERSION=20.9.0
+
+RUN if [ "$(dpkg --print-architecture)" = "amd64" ]; then export NODE_ARCH=x64 ; else export NODE_ARCH="arm64" ; fi; \
+    mkdir -p /node/${NODE_VERSION}/${NODE_ARCH} && \
+    curl -s -L https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-${NODE_ARCH}.tar.gz \
+    | tar xvzf - --strip-components=1 -C /node/${NODE_VERSION}/${NODE_ARCH} \
+    && cp -rf /node/${NODE_VERSION}/${NODE_ARCH}/bin/node /usr/bin/node \
+    && node --version
+
+RUN echo 'runner:x:1234:1234:,,,:/runner:/usr/sbin/nologin' >> /etc/passwd && \
+    echo 'messagebus:x:1111:' >> /etc/group
 RUN ["chown", "1234:1234", "-R", "/runner"]
+RUN ["chown", "1234:1234", "-R", "/kaniko"]
 
 ENV EPHEMERAL=""
 ENV ORG_URL="https://github.com/sliide"
@@ -49,7 +75,7 @@ ENV ACCESS_TOKEN=$ACCESS_TOKEN
 
 COPY entrypoint.sh  $HOME
 RUN chmod +x $HOME/entrypoint.sh
-USER runner
+#USER runner
 ENV RUNNER_ALLOW_RUNASROOT=true
 ENV EPHEMERAL=""
 ENV ORG_URL="https://github.com/sliide"
